@@ -1,0 +1,66 @@
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+input[type='text']{
+    width: 100%;
+    height: 60px;
+}
+
+</style>
+</head>
+<body>
+
+<input type='text' id='input'></input>
+<br><br>
+<input type='button' id='button' value='query'></input>
+<div id='status' style='color:orange;display:inline-block;'>status: OK</div>
+<hr>
+<table id='response'></table>
+
+<script>
+'use strict';
+let status = document.getElementById('status');
+let response = document.getElementById('response');
+
+function create_table(arr){
+    let table = document.createElement('table');
+    for (let r = 0; r < arr.length; r++){
+        let row = document.createElement('tr');
+        for (let c = 0; c < arr[r].length; c++){
+            let cell = document.createElement('td');
+            cell.innerText = arr[r][c];
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+    return table;
+}
+
+document.getElementById('button').addEventListener('click', function(){
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://joe.iddon.com')
+    xhr.onerror = function(){
+        status.innerText = 'status: ERROR';
+        status.style.color = 'red';
+    }
+    xhr.onreadystatechange = function(){
+        status.style.color = 'green';
+        if (xhr.readyState > 2){
+            let parsed = JSON.parse(xhr.response)
+            if (typeof(parsed) == 'string'){
+                response.innerHTML = xhr.response;
+            } else {
+                response.innerHTML = create_table(parsed).innerHTML;
+            }
+        }
+    }
+    xhr.send(document.getElementById('input').value);
+});
+</script>
+
+</body>
+</html>

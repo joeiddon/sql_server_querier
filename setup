@@ -1,0 +1,34 @@
+--sqliteonline.com
+Create table People(PersonID INT, Name TEXT); --add primary key and foreign key stuff eventually
+CREATE TABLE Foods(FoodID INT, FoodName Text);
+Create table Meals(PersonID INT, FoodID INT, Mealtime Date, Place tEXT);
+
+Insert into People Values(1, 'Joe');
+Insert into People Values(2, 'Philip');
+Insert into People Values(3, 'Zach');
+Insert into People Values(4, 'Parth');
+Insert into People Values(5, 'Aryan');
+
+Insert into Foods Values(1, 'Pasta');
+Insert into Foods Values(2, 'Chicken Wings');
+insert into Foods Values(3, 'Cat Food');
+Insert into Foods Values(4, 'Rice');
+Insert into Foods Values(5, 'Pizza');
+insert into Foods values(6, 'Christmas Pudding');
+
+insert into Meals Values(1,1,'2019-04-13','The Refectory');
+insert into Meals values(1,4,'2019-04-14','In my Kitchen');
+insert into Meals values(2,3,'2019-12-25','At the Christmas Tree');
+insert into Meals values(2,6,'2019-12-26','On Boxing Day');
+insert into Meals values(3,5,'2019-04-16','Italy');
+insert into Meals values(4,4,'2019-04-14','In this ComSci lesson [now]');
+insert into Meals values(5,2,'2019-04-17','At his house');
+
+--select People.Name from people where People.Name='Joe';
+--select People.Name,Meals.Place from People Inner join Meals on People.PersonID=Meals.PersonID;
+
+--select People.Name,Foods.FoodName,Meals.Place from (
+--  Foods inner join (Meals inner join People on Meals.PersonID=People.PersonID --this combines People and Meals tables
+--) on Meals.FoodId=Foods.FoodId) order by people.name; --this combines (People and Meals tables) with Foods
+
+select People.Name,Foods.FoodName,Meals.Place from (Foods inner join (Meals inner join People on Meals.PersonID=People.PersonID) on Meals.FoodId=Foods.FoodId) order by people.name;
