@@ -18,7 +18,7 @@ def execute_sql(comm):
     except sqlite3.Error as e:
         return json.dumps(e.args[0])
     headers = [m[0] for m in c.description]
-    return json.dumps(headers + c.fetchall())
+    return json.dumps([headers, *c.fetchall()])
     db.commit()
 
 class Handler(http.server.BaseHTTPRequestHandler):
