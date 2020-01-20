@@ -15,11 +15,14 @@ def execute_sql(comm):
     c = db.cursor()
     try:
         c.execute(comm)
+        db.commit()
     except sqlite3.Error as e:
         return json.dumps(e.args[0])
-    headers = [m[0] for m in c.description]
+    try:
+        headers = [m[0] for m in c.description]
+    except:
+        return '"no table returned"'
     return json.dumps([headers, *c.fetchall()])
-    db.commit()
 
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
@@ -27,6 +30,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
+        print(data)
         msg = execute_sql(data)
         self.wfile.write(msg.encode('utf-8'))
     def do_GET(self):

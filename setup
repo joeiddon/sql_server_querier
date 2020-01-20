@@ -1,7 +1,19 @@
---sqliteonline.com
-Create table People(PersonID INT, Name TEXT); --add primary key and foreign key stuff eventually
-CREATE TABLE Foods(FoodID INT, FoodName Text);
-Create table Meals(PersonID INT, FoodID INT, Mealtime Date, Place tEXT);
+--sqliteonline.com for testing
+
+PRAGMA foreign_keys = ON;
+
+create table People(PersonID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Name TEXT);
+
+create table Foods(FoodID INTEGER PRIMARY KEY AUTOINCREMENT,
+                   FoodName Text);
+
+create table Meals(PersonID INTEGER,
+                   FoodID INTEGER,
+                   Mealtime DATE,
+                   Place TEXT,
+                   FOREIGN KEY (PersonID) REFERENCES People(PersonID),
+                   FOREIGN KEY (FoodID) REFERENCES Foods(FoodID));
 
 Insert into People Values(1, 'Joe');
 Insert into People Values(2, 'Philip');
